@@ -15,7 +15,16 @@ attribution: 'Map data © <a href="https://www.openstreetmap.org/">OpenStreetMap
     accessToken: API_KEY
 });
 
-// Create a base layer that holds both maps.
+// Create the earthquake layer for our map
+let earthquakes = new L.LayerGroup();
+
+// We define an object that contains the overlays
+// This overlay will be visible all the time
+let overlays = {
+  Earthquakes: earthquakes
+};
+
+// Create a base layer control that holds both maps.
 let baseMaps = {
     'Streets': streets,
     'Satellite': satelliteStreets
@@ -28,8 +37,9 @@ let map = L.map('mapid', {
     layers: [streets]
 })
 
-// Pass our map layers into our layers control and add the layers control to the map.
-L.control.layers(baseMaps).addTo(map);
+// This is the layer control "function" where streets and satellite streets are added 
+// along with a toggle for the earthquak layer
+L.control.layers(baseMaps, overlays).addTo(map);
 
 
 // Grabbing our GeoJSON data.
@@ -51,8 +61,11 @@ L.geoJSON(data, {
     },
           // We set the style for each circleMarker using our styleInfo function.
     style: styleInfo,
-      }).addTo(map);
+      }).addTo(earthquakes);
 
+  // Then add the earthquak layer to the map
+  earthquakes.addTo(map);
+    });
 // This function determines the color of the circle based on the magnitude of the earthquake.
 function getColor(magnitude) {
   if (magnitude > 5) {
@@ -96,7 +109,7 @@ function getRadius(magnitude) {
   }
   return magnitude * 4;
 }
-    });
+  
  
 
 
