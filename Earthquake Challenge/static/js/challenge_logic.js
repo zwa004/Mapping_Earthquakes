@@ -218,7 +218,7 @@ legend.onAdd = function() {
         color: "#ea2c2c",
         radius: getRadius(feature.properties.mag),
         stroke: true,
-        weight: 0.5
+        weight: 1.5
       };
     }
 
